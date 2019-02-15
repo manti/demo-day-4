@@ -29,55 +29,65 @@ def flatten_json(y):
 
 def fetch_and_flatten():
     index_keys = set()
-    data_file_name = 'rapido_trip_dataset.json'
-    index_name = 'rapido_trip_index.json'
-    data_source = 'rapido_trip'
+    data_file_name = 'car_dataset.json'
+    index_name = 'car_index.json'
+    data_source = 'car'
     result_file = open(f"{proj_dir}/{data_file_name}", "w")
-    from amazon_mobile.models import Policy, Plan
-    from users.models import User
-
-    events = Policy.objects.filter(creatred_on__gte='2018-09-01')
+    from ackore.models import Policy
+    events = Policy.objects.all(plan_id__in=["car_tp", "car_bundled", "car_comprehensive"])
     for obj in events:
         in_json = {
-            "customer_name": obj.customer_name,
-            "customer_purchase_id": obj.customer_purchase_id,
-            "address": obj.address,
+            "plan_id" : obj.plan_id
+            "plan_type": obj.plan_type,
+            "name": obj.name,
+            "variant": obj.variant,
+            "registration_year": obj.registration_year,
+            "pincode": obj.pincode,
+            "previous_policy_expiry_range": obj.previous_policy_expiry_range,
+            "previous_policy_expiry": obj.previous_policy_expiry,
+            "policy_start_date": obj.policy_start_date,
+            "policy_expiry_date": obj.policy_expiry_date,
+            "tenure": obj.tenure,
+            "previous_policy_expired": obj.previous_policy_expired,
+            "selected_idv": obj.selected_idv,
+            "net_premium": obj.net_premium,
+            "gst_price": obj.gst_price,
+            "gst_percentage": obj.gst_percentage,
+            "payment_id": obj.payment_id,
+            "idit_id": obj.idit_id,
+            "car_name": obj.car_name,
+            "ncb_discount": obj.ncb_discount,
+            "covers": obj.covers,
+            "premium": obj.premium,
+            "discount": obj.discount,
+            "is_claim_previous_policy": obj.is_claim_previous_policy,
+            "previous_ncb": obj.previous_ncb,
+            "invoice_date": obj.invoice_date,
+            "communication_address": obj.communication_address,
             "city": obj.city,
-            "state": obj.state,
-            "sale_price": obj.sale_price,
-            "status": obj.status,
-            "email": obj.email,
-            "purchased_on": obj.purchased_on,
-            "dispatched_on": obj.dispatched_on,
-            "invoiced_on": obj.invoiced_on,
-            "payment_mode": obj.payment_mode,
-            "imei": obj.imei,
-            "delivered_on": obj.delivered_on,
-            "customer_id": obj.customer_id,
-            "created_on": obj.created_on,
-            "updated_on": obj.updated_on,
-            "cancelled_on": obj.cancelled_on,
-            "item_name": obj.item_name,
-            "phone_order_id": obj.phone_order_id,
-            "plan_order_id": obj.plan_order_id,
-            "subscription_end": obj.subscription_end,
-            "subscription_start": obj.subscription_start,
-            "is_policy_complete": obj.is_policy_complete,
-            "document": obj.document,
-            "policy_number": obj.policy_number,
-            "sequence": obj.sequence,
-            "plan_price": obj.plan_price,
-            "insurance_cancellation_date": obj.insurance_cancellation_date,
-            "insurance_delivery_date": obj.insurance_delivery_date,
-            "mobile_cancellation_date": obj.mobile_cancellation_date,
-            "mobile_delivery_date": obj.mobile_delivery_date,
-            "is_activated_by_user": obj.is_activated_by_user,
-            "is_replaceable": obj.is_replaceable,
-            "is_standalone": obj.is_standalone,
-            "is_updated_by_user": obj.is_updated_by_user,
-            "user": obj.user.phone,
-            "plan": obj.plan.plan_type,
-            "pincode": obj.pincode.pincode,
+            "is_vehicle_financed": obj.is_vehicle_financed,
+            "partner_id": obj.partner_id,
+            "is_cng_lpg_kit": obj.is_cng_lpg_kit,
+            "cng_lpg_kit_cost": obj.cng_lpg_kit_cost,
+            "nominee_name": obj.nominee_name,
+            "nominee_age": obj.nominee_age,
+            "nominee_relationship": obj.nominee_relationship,
+            "appointee_name": obj.appointee_name,
+            "appointee_relationship": obj.appointee_relationship,
+            "previous_policy_number": obj.previous_policy_number,
+            "previous_insurer": obj.previous_insurer,
+            "manufacturing_year": obj.manufacturing_year,
+            "previous_policy_type": obj.previous_policy_type,
+            "pan_number": obj.pan_number,
+            "corporate_gst_number": obj.corporate_gst_number,
+            "payment_option": obj.payment_option,
+            "use_apd": obj.use_apd,
+            "is_new": obj.is_new,
+            "seller_id": obj.seller_id,
+            "pa_cover_required": obj.pa_cover_required,
+            "is_policy_holder_individual": obj.is_policy_holder_individual,
+            "dob": obj.dob,
+            "pa_cover_tenure": obj.pa_cover_tenure,
             "timestamp": str(obj.created_on)[:10]+'T'+str(obj.created_on)[11:19]+'.000Z',
         }
         flat_json = flatten_json(in_json)
@@ -139,3 +149,5 @@ def create_index(keys, data_source, index_name, data_file_name):
         }
     }
     json.dump(index, open(index_name, 'w'), indent=4)
+
+
