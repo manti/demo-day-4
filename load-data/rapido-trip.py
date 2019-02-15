@@ -29,25 +29,32 @@ def flatten_json(y):
 
 def fetch_and_flatten():
     index_keys = set()
-    data_file_name = 'redbus_dataset.json'
-    index_name = 'redbus_index.json'
-    data_source = 'redbus'
+    data_file_name = 'rapido_trip_dataset.json'
+    index_name = 'rapido_trip_index.json'
+    data_source = 'rapido_trip'
     result_file = open(f"{proj_dir}/"+data_file_name, "w")
     from ackore.models import Policy
-    events = Policy.objects.all(plan_id='redbus')
+    events = Policy.objects.all(plan_id='rapido_trip')
     for obj in events:
         in_json = {
-            "id": obj.data.get('id'),
             "user_id": obj.data.get('user_id'),
-            "name" : obj.data.get('name'),
-            "phone" : obj.data.get('phone'),
-            "city" : obj.data.get('city'),
-            "email" : obj.data.get('email'),
-            "driver_id" : obj.data.get('driver_id'),
-            "dl_number" : obj.data.get('dl_number'),
-            "vehicle_number" : obj.data.get('vehicle_number'),
-            "extra" : obj.data.get('extra'),
-            "cancelled" : obj.data.get('cancelled'),
+            "name": obj.data.get('name'),
+            "phone": obj.data.get('phone'),
+            "ride_type": obj.data.get('ride_type'),
+            "trip_id": obj.data.get('trip_id'),
+            "booked_on": obj.data.get('booked_on'),
+            "city": obj.data.get('city'),
+            "expected_trip_start_time": obj.data.get('expected_trip_start_time'),
+            "email": obj.data.get('email'),
+            "passenger_id": obj.data.get('passenger_id'),
+            "vehicle_type": obj.data.get('vehicle_type'),
+            "extra": obj.data.get('extra'),
+            "pickup": obj.data.get('pickup'),
+            "drop": obj.data.get('drop'),
+            "cancelled": obj.data.get('cancelled'),
+            "endorsements": obj.data.get('endorsements'),
+            "addons": obj.data.get('addons'),
+            "premium": obj.data.get('premium'),
             "timestamp": str(obj.created_on)[:10]+'T'+str(obj.created_on)[11:19]+'.000Z',
         }
         flat_json = flatten_json(in_json)
