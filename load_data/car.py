@@ -34,10 +34,10 @@ def fetch_and_flatten():
     data_source = 'car'
     result_file = open(f"{proj_dir}/{data_file_name}", "w")
     from ackore.models import Policy
-    events = Policy.objects.all(plan_id__in=["car_tp", "car_bundled", "car_comprehensive"])
+    events = Policy.objects.filter(plan_id__in=["car_tp", "car_bundled", "car_comprehensive"])
     for obj in events:
         in_json = {
-            "plan_id" : obj.plan_id
+            "plan_id" : obj.plan_id,
             "plan_type": obj.plan_type,
             "name": obj.name,
             "variant": obj.variant,

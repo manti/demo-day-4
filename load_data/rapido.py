@@ -34,7 +34,7 @@ def fetch_and_flatten():
     data_source = 'rapido'
     result_file = open(f"{proj_dir}/{data_file_name}", "w")
     from ackore.models import Policy
-    events = Policy.objects.all(plan_id='rapido_trip')
+    events = Policy.objects.filter(plan_id='rapido_trip')
     for obj in events:
         in_json = {
             "id": obj.data.get('id'),
